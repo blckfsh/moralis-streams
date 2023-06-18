@@ -7,7 +7,7 @@ require("dotenv").config();
 
 app.use(express.json());
 
-app.post("/webhook", async (req, res) => {
+app.post("/nfts/specific", async (req, res) => {
   const { headers, body } = req;
 
   try {
@@ -16,28 +16,28 @@ app.post("/webhook", async (req, res) => {
       signature: headers["x-signature"],
     });
 
-    // if (body.block.number && Number(body.block.number) > blocknum) {
-    //   blocknum = Number(body.block.number);
-    // } else {
-    //   return res.status(200).json();
-    // }
+    if (body.block.number && Number(body.block.number) > blocknum) {
+      blocknum = Number(body.block.number);
+    } else {
+      return res.status(200).json();
+    }
 
-    // console.log("\n**** Block Number " + body.block.number + " ****\n");
+    console.log("\n**** Block Number " + body.block.number + " ****\n");
 
-    // for (nftTransfer of body.nftTransfers) {
-    //   console.log(
-    //     nftTransfer.to.slice(0, 4) +
-    //       "..." +
-    //       nftTransfer.to.slice(38) +
-    //       " just received " +
-    //       nftTransfer.tokenName +
-    //       " (" +
-    //       nftTransfer.tokenId +
-    //       ")"
-    //   );
-    // }
+    for (nftTransfer of body.nftTransfers) {
+      console.log(
+        nftTransfer.to.slice(0, 4) +
+          "..." +
+          nftTransfer.to.slice(38) +
+          " just received " +
+          nftTransfer.tokenName +
+          " (" +
+          nftTransfer.tokenId +
+          ")"
+      );
+    }
 
-    console.log(body);
+    // console.log(body);
 
     return res.status(200).json();
   } catch (e) {
